@@ -85,7 +85,7 @@ export default Component.extend({
       case "all":
         return !/editCategory|admin|full-page-search/.test(currentRouteName);
     }
-    
+
     return false;
   },
 
