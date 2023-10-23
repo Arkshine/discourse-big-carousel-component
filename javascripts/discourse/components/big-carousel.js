@@ -52,7 +52,7 @@ export default Component.extend({
         .then(() => {
           this.set("bigUserSlides", bigUserSlides);
           this.set("bigStaticSlides", bigStaticSlides);
-          loadScript(settings.theme_uploads.tiny_slider).then(() => {
+          loadScript(settings.theme_uploads_local.tiny_slider).then(() => {
             // slider script
             tns({
               container: ".custom-big-carousel-slides",
