@@ -6,6 +6,7 @@ import discourseComputed from "discourse-common/utils/decorators";
 import { inject as service } from "@ember/service";
 import { ajax } from "discourse/lib/ajax";
 import { Promise } from "rsvp";
+import { defaultHomepage } from "discourse/lib/utilities";
 
 export default Component.extend({
   router: service(),
@@ -71,9 +72,21 @@ export default Component.extend({
     }
   },
 
-  @discourseComputed("router.currentRouteName")
-  shouldDisplay(currentRouteName) {
-    return currentRouteName === "discovery.categories";
+  @discourseComputed("router.currentRoute.localName", "router.currentRouteName")
+  shouldDisplay(currentRouterlocalName, currentRouteName) {
+    switch (settings.show_on) {
+      case "homepage":
+        return currentRouteName === `discovery.${defaultHomepage()}`;
+      case "top_menu":
+        const topMenuRoutes = this.siteSettings.top_menu
+          .split("|")
+          .filter(Boolean);
+        return topMenuRoutes.includes(currentRouterlocalName);
+      case "all":
+        return !/editCategory|admin|full-page-search/.test(currentRouteName);
+    }
+    
+    return false;
   },
 
   didInsertElement() {
